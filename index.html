@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>STRATEON</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="auth-screen" class="screen active">
+        <div class="auth-box">
+            <div class="auth-header">
+                <h1>STRATEON</h1>
+                <p>Intelligence Artificielle Avancée</p>
+            </div>
+            <div class="tabs">
+                <button class="tab active" data-tab="login">Connexion</button>
+                <button class="tab" data-tab="register">Inscription</button>
+            </div>
+            <form id="login-form" class="form active" autocomplete="off">
+                <div class="input-field"><input type="text" id="login-email" name="nem-l" placeholder="Email ou identifiant" required></div>
+                <div class="input-field"><input type="password" id="login-password" name="nem-p" placeholder="Mot de passe" required></div>
+                <div id="login-error" class="error-msg"></div>
+                <button type="submit" class="btn-primary">Se connecter</button>
+            </form>
+            <form id="register-form" class="form" autocomplete="off">
+                <div class="input-field"><input type="text" id="register-pseudo" name="nem-rp" placeholder="Pseudo" maxlength="20" required></div>
+                <div class="input-field"><input type="email" id="register-email" name="nem-re" placeholder="Email" required></div>
+                <div class="input-field"><input type="password" id="register-password" name="nem-rpw" placeholder="Mot de passe (6+ car.)" minlength="6" required></div>
+                <label class="checkbox"><input type="checkbox" id="accept-terms" required><span>J'accepte la <a href="#" id="privacy-link">politique de confidentialité</a></span></label>
+                <div id="register-error" class="error-msg"></div>
+                <div id="register-success" class="success-msg"></div>
+                <button type="submit" class="btn-primary">Créer mon compte</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="boot-screen" class="screen">
+        <div class="boot-box">
+            <div class="boot-loader"></div>
+            <div class="boot-text" id="boot-text">Initialisation...</div>
+            <div class="boot-bar"><div class="boot-fill" id="boot-fill"></div></div>
+        </div>
+    </div>
+
+    <div id="chat-screen" class="screen">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="brand"><div class="brand-icon"></div><span>STRATEON</span></div>
+                <button class="icon-btn" id="close-sidebar">✕</button>
+            </div>
+            <button class="new-chat-btn" id="new-chat"><span>+</span> Nouvelle conversation</button>
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar"></div>
+                <div><div class="user-name" id="user-name"></div><div class="user-email" id="user-email"></div></div>
+            </div>
+            <div class="sidebar-links">
+                <button class="sidebar-btn" id="btn-export">📄 Exporter</button>
+                <button class="sidebar-btn" id="btn-settings">⚙️ Paramètres</button>
+                <button class="sidebar-btn" id="btn-privacy">🔒 Confidentialité</button>
+                <button class="sidebar-btn" id="btn-clear">🗑️ Effacer</button>
+                <button class="sidebar-btn danger" id="btn-logout">🚪 Déconnexion</button>
+                <button class="sidebar-btn admin" id="btn-admin">🔐 Admin</button>
+            </div>
+        </aside>
+        <div class="overlay" id="overlay"></div>
+        <main class="chat-area">
+            <header class="topbar">
+                <button class="icon-btn" id="open-sidebar">☰</button>
+                <div class="topbar-title">STRATEON</div>
+                <div class="topbar-status"><span class="status-dot"></span>En ligne</div>
+            </header>
+            <div class="messages" id="messages"></div>
+            <div class="input-area">
+                <div class="input-box">
+                    <button class="voice-btn" id="voice-btn" title="Parler">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                    </button>
+                    <textarea id="input" placeholder="Écris ton message..." rows="1"></textarea>
+                    <button class="send-btn" id="send-btn" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span>"Génère une image de..." pour créer des visuels</span>
+                    <span id="char-count">0/4000</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="admin-screen" class="screen">
+        <div class="admin-box">
+            <div class="admin-header"><h1>Administration</h1><button class="btn-back" id="admin-back">← Retour</button></div>
+            <div class="admin-stats" id="admin-stats"></div>
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-p="users">Utilisateurs</button>
+                <button class="admin-tab" data-p="messages">Messages</button>
+                <button class="admin-tab" data-p="images">Images</button>
+            </div>
+            <div class="admin-content" id="admin-content"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="settings-modal"><div class="modal-box"><div class="modal-head"><h2>Paramètres</h2><button class="modal-close">✕</button></div><div class="modal-body">
+        <div class="setting-row"><span>Particules</span><label class="switch"><input type="checkbox" id="opt-particles" checked><span></span></label></div>
+        <div class="setting-row"><span>Sons</span><label class="switch"><input type="checkbox" id="opt-sounds"><span></span></label></div>
+        <div class="setting-row"><span>Couleur</span><div class="colors"><button class="color active" data-c="red"></button><button class="color" data-c="purple"></button><button class="color" data-c="cyan"></button><button class="color" data-c="green"></button><button class="color" data-c="orange"></button></div></div>
+    </div></div></div>
+
+    <div class="modal" id="privacy-modal"><div class="modal-box large"><div class="modal-head"><h2>Confidentialité</h2><button class="modal-close">✕</button></div><div class="modal-body scroll">
+        <h3>Données</h3><p>Pseudo, email et historique stockés localement dans ton navigateur.</p>
+        <h3>Services</h3><p>Groq (réponses IA) et Pollinations (images) reçoivent tes requêtes.</p>
+        <h3>Suppression</h3><p>Utilise "Effacer" ou vide le localStorage du navigateur.</p>
+    </div></div></div>
+
+    <div class="modal" id="image-modal"><div class="modal-box image"><button class="modal-close">✕</button><img id="modal-img"><a class="download-btn" id="download-img" download="strateon.png">Télécharger</a></div></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
