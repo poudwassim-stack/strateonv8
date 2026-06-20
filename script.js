@@ -2,9 +2,8 @@
    STRATEON — FINAL
    ═══════════════════════════════════════════ */
 
-const API_KEY = "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";
-const API_URL = "https://api.groq.com/openai/v1/chat/completions";
-const MODEL = "llama-3.3-70b-versatile";
+const API_URL = "/api/chat";
+const MODEL = "google/gemma-4-31b-it:free";
 const ADMIN_ID = "HE83E83E739";
 const ADMIN_PW = "hdueiauduezf";
 const HORDE_API = "https://aihorde.net/api/v2";
@@ -317,7 +316,7 @@ async function chat(text){
     $("input").value="";$("input").style.height="auto";$("char-count").textContent="0/4000";
     const th=addThink();
     try{
-        const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json","Authorization":`Bearer ${API_KEY}`},body:JSON.stringify({model:MODEL,messages:chatHistory,temperature:0.7,max_tokens:1024,stream:true})});
+        const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:MODEL,messages:chatHistory,temperature:0.7,max_tokens:1024,stream:true})});
         if(!res.ok)throw new Error(`Erreur ${res.status}`);
         th.remove();
         const div=addMsg("ai",""),bubble=div.querySelector(".msg-bubble");div.classList.add("streaming");
